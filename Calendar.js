@@ -178,14 +178,25 @@ export default class Calendar extends Component {
   }
   _onChoose(day) {
     const { startDate, endDate } = this.state
-    if ((!startDate && !endDate) || day < startDate || (startDate && endDate)) {
+
+    if (
+      (!startDate && !endDate) ||
+      day < startDate ||
+      (startDate && endDate && startDate != endDate)
+    ) {
       this.setState({
         startDate: day,
-        endDate: null,
+        endDate: day,
         startDateText: this._i18n(day, 'date'),
         startWeekdayText: this._i18n(day.isoWeekday(), 'weekday'),
-        endDateText: '',
-        endWeekdayText: ''
+        endDateText: this._i18n(day, 'date'),
+        endWeekdayText: this._i18n(day.isoWeekday(), 'weekday')
+      })
+    } else if (startDate && endDate && startDate == endDate) {
+      this.setState({
+        endDate: day,
+        endDateText: this._i18n(day, 'date'),
+        endWeekdayText: this._i18n(day.isoWeekday(), 'weekday')
       })
     } else if (startDate && !endDate && day > startDate) {
       this.setState({
